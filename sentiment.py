@@ -36,8 +36,15 @@ def sentiment_value(title, para):
             para_words.append(re.sub("[()“”:…]+", "", word.replace("’","'")))'''
 
     for word in para.lower().split():
-        for item in re.split(". |, |\-|\n",word):
-            para_words.append(re.sub("[()“”:…]+", "", item.replace("’","'").replace('.','').replace(',','')))
+        if 'https' in word:
+            continue
+        ###words_list = re.split("\. |, |/ |\-|\n",word)
+        words_list = re.findall(r"[\w']+", word)
+        for item in words_list:
+            if item == '—':
+                continue
+            else:
+                para_words.append(re.sub("[()“”:…]+", "", item.replace("’","'").replace('.','').replace(',','').replace('—','')))
 
     clean_words = para_words[:]
     

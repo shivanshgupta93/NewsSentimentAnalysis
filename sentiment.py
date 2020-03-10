@@ -43,6 +43,8 @@ def sentiment_value(title, para):
         for item in words_list:
             if item == '—':
                 continue
+            if item == "'":
+                continue
             else:
                 para_words.append(re.sub("[()“”:…]+", "", item.replace("’","'").replace('.','').replace(',','').replace('—','')))
 

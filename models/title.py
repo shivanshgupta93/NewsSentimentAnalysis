@@ -11,8 +11,11 @@ class Title(Base):
     title = Column(String)
     news_id = Column(Integer)
     news_channel = Column(String)
+    author = Column(String)
+    link = Column(String)
+    publish_date = Column(String)
     sentiment_value = Column(Float)
     insert_date = Column(Date(), default=datetime.datetime.now().date())
 
     def __repr__(self):
-        return "<Title (title_id='%d', title='%s', news_id='%d', news_channel='%s', sentiment_value='%f', inserted_date='%s' )" % (self.title_id, self.title, self.news_id, self.news_channel, self.sentiment_value, self.inserted_date)
+        return "<Title (title_id='%d', title='%s', news_id='%d', news_channel='%s', author='%s', link='%s', publish_date='%s', sentiment_value='%f', inserted_date='%s' )" % (self.title_id, self.title, self.news_id, self.news_channel, self.author, self.link, self.publish_date, self.sentiment_value, self.inserted_date)

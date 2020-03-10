@@ -1,6 +1,6 @@
 from selenium import webdriver
 import pandas as pd
-from consts import HILL_LINK, GUARDIAN_LINK
+###from consts import HILL_LINK, GUARDIAN_LINK
 from sentiment import sentiment_value
 from jobs.cron import news_sentiment_data
 import traceback
@@ -10,10 +10,10 @@ options = webdriver.ChromeOptions()
 options.add_argument("--incognito")
 
 #--------------------------------The Guardian Article ------------------------------
-def guardian_article():
+def guardian_article(link, publish_date, author, description):
     
     driver = webdriver.Chrome('chromedriver.exe', chrome_options=options)  #Path of the crome driver, using headless.
-    driver.get(GUARDIAN_LINK)
+    driver.get(link)
 
     try:
         #Headline for First Article
@@ -31,9 +31,12 @@ def guardian_article():
         for i in range(numberOfParas):   
             para = para + " " + driver.find_element_by_xpath("(//div[contains(@class, 'article-body')]//following::p)[{}]".format(i+1)).text
 
+        if para == '':
+            para = description
+
         polarity, keyword_count = sentiment_value(title, para)
 
-        news_sentiment_data("The Guardian", title, polarity, keyword_count)
+        news_sentiment_data("The Guardian", title, link, publish_date, author, polarity, keyword_count)
 
 
     except():
@@ -42,10 +45,10 @@ def guardian_article():
     driver.close()
 
 #--------------------------------The Hill Article ------------------------------
-def hill_article():
+def hill_article(link, publish_date, author, description):
 
     driver = webdriver.Chrome('chromedriver.exe', chrome_options=options)  #Path of the crome driver, using headless.
-    driver.get(HILL_LINK)
+    driver.get(link)
     
     try:
         #Headline for Second Article
@@ -59,9 +62,12 @@ def hill_article():
         for i in range(numberOfParas):   
             para = para + " " + driver.find_element_by_xpath("(//div[@class='field-items']/div/p)[{}]".format(i+1)).text
 
+        if para == '':
+            para = description
+
         polarity, keyword_count = sentiment_value(title, para)
 
-        news_sentiment_data("The Hill", title, polarity, keyword_count)
+        news_sentiment_data("The Hill", title, link, publish_date, author, polarity, keyword_count)
 
     except:
         print(str(traceback.format_exc()))
